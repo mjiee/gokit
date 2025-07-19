@@ -7,7 +7,7 @@ package slicex
 //
 // Parameters:
 //
-//	sourceSlice - the input slice to process ([]T)
+//	elements - the input slice to process ([]T)
 //	keySelector - function that extracts a comparable key from each element (func(T) K)
 //
 // Returns:
@@ -23,13 +23,18 @@ package slicex
 //	    {ID: 1, Name: "Alice"},
 //	}
 //	distinctUsers := Distinct(users, func(u User) int { return u.ID })
-func Distinct[T any, K comparable](sourceSlice []T, keySelector func(item T) K) []T {
+//
+//	// distinctUsers == []User{
+//	//     {ID: 1, Name: "Alice"},
+//	//     {ID: 2, Name: "Bob"},
+//	// }
+func Distinct[T any, K comparable](elements []T, keySelector func(item T) K) []T {
 	var (
 		seenKeys      = make(map[K]bool)
-		distinctItems = make([]T, 0, len(sourceSlice))
+		distinctItems = make([]T, 0, len(elements))
 	)
 
-	for _, item := range sourceSlice {
+	for _, item := range elements {
 		key := keySelector(item)
 		if !seenKeys[key] {
 			seenKeys[key] = true

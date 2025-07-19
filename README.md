@@ -2,9 +2,7 @@
 
 ![Go Version](https://img.shields.io/github/go-mod/go-version/mjiee/gokit)
 ![License](https://img.shields.io/github/license/mjiee/gokit)
-![Build Status](https://img.shields.io/github/actions/workflow/status/mjiee/gokit/go.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mjiee/gokit)](https://goreportcard.com/report/github.com/mjiee/gokit)
-[![Coverage Status](https://coveralls.io/repos/github/mjiee/gokit/badge.svg)](https://coveralls.io/github/mjiee/gokit)
 
 **GoKit** is a modern Go utilities library designed to provide developers with efficient, reliable, and easy-to-use tools. From basic data processing to advanced framework wrappers, GoKit aims to become an indispensable toolbox in the Go ecosystem.
 
