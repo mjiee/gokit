@@ -1,0 +1,44 @@
+version: "2"
+
+run:
+  timeout: 5m
+  relative-path-mode: gomod
+  concurrency: 4
+
+issues: 
+  fix: true  # 自动修复，存量错误解决完后开启
+
+linters:
+  default: all
+  # enable:
+  #   - errcheck   # 不规范的错误处理检测
+  #   - govet      # 检查潜在的语法错误和不规范的用法，等同于go vet
+  #   - ineffassign  # 是否存在未初始化的变量，防止panic，如：slice, map, point未初始化
+  #   - staticcheck  # 代码静态检测, 加强版go vet
+  #   - unused     # 是否存在未使用的变量
+  #   - asasalint  # 别名检测，如使用：any 替换 interface
+  #   - bodyclose  # 是否存在未关闭的http.Body，file等
+  #   - errorlint  # 错误处理规范检测
+  #   - exptostd   # 是否存在可被标准库替代的 golang.org/x/exp/ 引用
+  #   - forbidigo  # 是否存在错误占位符
+  #   - goconst    # 可以使用常量代替的全局变量
+  #   - gocyclo    # 循环复杂度检测
+  #   - goheader   # http header参数格式
+  #   - gosec      # 安全检测, 如：引用不安全包，密钥写在代码里等
+  #   - misspell   # 是否存在拼写错误
+  #   - unconvert  # 是否存在不必要的类型转换
+  #   - unparam    # 是否存在为使用的函数入参
+  #   - wrapcheck  # 错误是否包裹堆栈, 如：return errorx.WithStack(err)
+  #   # - forcetypeassert  # 类型断言必须校验结果，如: userId, ok := data.(int64)
+  exclusions:  # 排除检测文件
+    paths:
+
+formatters:
+  enable:
+    - goimports
+    - gci
+    - gofmt
+    - gofumpt
+    - golines
+  exclusions:
+    paths:
