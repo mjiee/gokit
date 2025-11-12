@@ -39,6 +39,30 @@ func SliceMap[T any, V any](elements []T, transform func(T) V) []V {
 	return result
 }
 
+// SliceMapErr applies a transformation function to each element of a slice and returns a new slice
+//
+// Parameters:
+//   - elements: The input slice to process ([]T)
+//   - transform: function that transforms each element of the slice (func(T) (V, error))
+//
+// Returns:
+//   - []V: a slice of transformed elements
+//   - error: an error if any occurred during processing
+func SliceMapErr[T any, V any](elements []T, transform func(T) (V, error)) ([]V, error) {
+	result := make([]V, 0, len(elements))
+
+	for _, item := range elements {
+		resultItem, err := transform(item)
+		if err != nil {
+			return nil, err
+		}
+
+		result = append(result, resultItem)
+	}
+
+	return result, nil
+}
+
 // SliceGroupBy groups the elements of a slice by a key selector function.
 //
 // Parameters:
