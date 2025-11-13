@@ -4,7 +4,7 @@
 ![License](https://img.shields.io/github/license/mjiee/gokit)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mjiee/gokit)](https://goreportcard.com/report/github.com/mjiee/gokit)
 
-**GoKit** is a modern Go utilities library designed to provide developers with efficient, reliable, and easy-to-use tools. From basic data processing to advanced framework wrappers, GoKit aims to become an indispensable toolbox in the Go ecosystem.
+[**GoKit**](https://pkg.go.dev/github.com/mjiee/gokit) is a modern Go utilities library designed to provide developers with efficient, reliable, and easy-to-use tools. From basic data processing to advanced framework wrappers, GoKit aims to become an indispensable toolbox in the Go ecosystem.
 
 ## Features
 

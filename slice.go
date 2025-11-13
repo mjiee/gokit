@@ -277,3 +277,38 @@ func SliceShuffle[T any](elements []T) []T {
 
 	return copied
 }
+
+// SliceToMap converts a slice of elements into a map using a key selector function.
+//
+// Parameters:
+//
+//	elements - the input slice to convert ([]T)
+//	keySelector - function that extracts a key from each element (func(T) K)
+//
+// Returns:
+//
+//	map[K]T - a map where keys are produced by the keySelector function and values are the original elements
+//
+// Example:
+//
+//	// Convert a list of users to a map by their IDs
+//	users := []User{
+//	    {ID: 1, Name: "Alice"},
+//	    {ID: 2, Name: "Bob"},
+//	}
+//	usersMap := SliceToMap(users, func(u User) int { return u.ID })
+//
+//	// usersMap == map[int]User{
+//	//     1: {ID: 1, Name: "Alice"},
+//	//     2: {ID: 2, Name: "Bob"},
+//	// }
+func SliceToMap[T any, K comparable](elements []T, keySelector func(item T) K) map[K]T {
+	result := make(map[K]T, len(elements))
+
+	for _, item := range elements {
+		key := keySelector(item)
+		result[key] = item
+	}
+
+	return result
+}
