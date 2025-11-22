@@ -40,3 +40,38 @@ func Unmarshal[T any](data string) (T, error) {
 
 	return result, err
 }
+
+// Marshal encodes a Go value into a string according to the provided marshal and encode options.
+//
+// Parameters:
+//   - data: T
+//
+// Returns:
+//   - string: string
+//   - error: error
+func Marshal(data any) (string, error) {
+	bytes, err := json.Marshal(data)
+
+	return string(bytes), err
+}
+
+// MarshalSafe encodes a Go value into a string according to the provided marshal and encode options.
+//
+// Parameters:
+//   - data: T
+//
+// Returns:
+//   - string: string
+func MarshalSafe(data any) string {
+	if data == nil {
+		return ""
+	}
+
+	result, err := Marshal(data)
+
+	if err != nil {
+		return ""
+	}
+
+	return result
+}
