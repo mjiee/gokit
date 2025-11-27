@@ -6,15 +6,6 @@
 
 [**GoKit**](https://pkg.go.dev/github.com/mjiee/gokit) is a modern Go utilities library designed to provide developers with efficient, reliable, and easy-to-use tools. From basic data processing to advanced framework wrappers, GoKit aims to become an indispensable toolbox in the Go ecosystem.
 
-## Features
-
-### Core Modules
-
-- **Collection Utilities**: Powerful slice and map operations
-  - Functional operations: Filter, Find, Map, Reduce
-  - Practical functions: Deduplication, Grouping, Pagination
-  - Type-safe generics implementation
-
 ## Design Philosophy
 
 1. **Clean API**: Intuitive naming and clear function signatures

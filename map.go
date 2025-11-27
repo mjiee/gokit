@@ -3,13 +3,11 @@ package gokit
 // MapToSlice converts a map to a slice
 //
 // Parameters:
-//
-//	elements - The map to convert
-//	transform - The function to apply to each element
+//   - elements - The map to convert
+//   - transform - The function to apply to each element
 //
 // Returns:
-//
-//	[]T - The slice of transformed elements
+//   - []T - The slice of transformed elements
 //
 // Example:
 //
