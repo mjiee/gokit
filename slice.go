@@ -24,11 +24,6 @@ import "math/rand/v2"
 //	names := []string{"Alice", "Bob", "Charlie"}
 //	lengths := SliceMap(names, func(s string) int { return len(s) })
 //	// lengths == []int{5, 3, 7}
-//
-//	// Convert numbers to strings
-//	numbers := []int{1, 2, 3}
-//	strings := SliceMap(numbers, func(n int) string { return fmt.Sprintf("%d", n) })
-//	// strings == []string{"1", "2", "3"}
 func SliceMap[T any, V any](elements []T, transform func(T) V) []V {
 	result := make([]V, 0, len(elements))
 
@@ -61,6 +56,38 @@ func SliceMapErr[T any, V any](elements []T, transform func(T) (V, error)) ([]V,
 	}
 
 	return result, nil
+}
+
+// SliceFilterMap applies a transformation function to each element of a slice and returns a new slice
+// that contains the transformed elements.
+//
+// Parameters:
+//   - elements: The input slice to process ([]T)
+//   - transform: function that transforms each element of the slice (func(T) (V, error))
+//
+// Returns:
+//   - []V: a slice of transformed elements
+//   - error: an error if any occurred during processing
+//
+// Example:
+//
+//	// Filter out even numbers
+//	numbers := []int{1, 2, 3}
+//	numbersByEvenOdd := SliceFilterMap(numbers, func(n int) (bool, string) {
+//	    return n%2 == 0, fmt.Sprintf("Number %d is even", n)
+//	})
+//	// numbersByEvenOdd == []string{"Number 2 is even"}
+func SliceFilterMap[T any, V any](elements []T, transform func(T) (bool, V)) []V {
+	result := make([]V, 0, len(elements))
+
+	for _, item := range elements {
+		isValid, resultItem := transform(item)
+		if isValid {
+			result = append(result, resultItem)
+		}
+	}
+
+	return result
 }
 
 // SliceGroupBy groups the elements of a slice by a key selector function.
@@ -202,13 +229,11 @@ func SliceFilter[T any](elements []T, predicate func(T) bool) []T {
 // distinct if they produce different keys when passed to the selector function.
 //
 // Parameters:
-//
-//	elements - the input slice to process ([]T)
-//	keySelector - function that extracts a comparable key from each element (func(T) K)
+//   - elements - the input slice to process ([]T)
+//   - keySelector - function that extracts a comparable key from each element (func(T) K)
 //
 // Returns:
-//
-//	[]T - a new slice containing only the distinct elements from the input
+//   - []T - a new slice containing only the distinct elements from the input
 //
 // Example:
 //
@@ -249,12 +274,10 @@ func SliceDistinct[T any, K comparable](elements []T, keySelector func(item T) K
 // has an equal probability of occurrence.
 //
 // Parameters:
-//
-//	elements - the input slice to shuffle ([]T)
+//   - elements - the input slice to shuffle ([]T)
 //
 // Returns:
-//
-//	[]T - the same slice with its elements randomly shuffled
+//   - []T - the same slice with its elements randomly shuffled
 //
 // Example:
 //
@@ -281,13 +304,11 @@ func SliceShuffle[T any](elements []T) []T {
 // SliceToMap converts a slice of elements into a map using a key selector function.
 //
 // Parameters:
-//
-//	elements - the input slice to convert ([]T)
-//	keySelector - function that extracts a key from each element (func(T) K)
+//   - elements - the input slice to convert ([]T)
+//   - keySelector - function that extracts a key from each element (func(T) K)
 //
 // Returns:
-//
-//	map[K]T - a map where keys are produced by the keySelector function and values are the original elements
+//   - map[K]T - a map where keys are produced by the keySelector function and values are the original elements
 //
 // Example:
 //
