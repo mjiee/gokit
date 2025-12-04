@@ -34,15 +34,19 @@ func SliceMap[T any, V any](elements []T, transform func(T) V) []V {
 	return result
 }
 
-// SliceMapErr applies a transformation function to each element of a slice and returns a new slice
+// SliceMapErr applies a transformation function to each element of a slice,
+// returning a new slice containing the transformed values. If the transformation
+// function returns an error for any element, processing stops immediately, and
+// that error is returned.
 //
 // Parameters:
-//   - elements: The input slice to process ([]T)
-//   - transform: function that transforms each element of the slice (func(T) (V, error))
+//   - elements: The input slice to transform ([]T).
+//   - transform: A function that converts an element of type T to a value of type V
+//     or returns an error (func(T) (V, error)).
 //
 // Returns:
-//   - []V: a slice of transformed elements
-//   - error: an error if any occurred during processing
+//   - []V: A new slice of transformed elements.
+//   - error: The first error encountered during the transformation, or nil.
 func SliceMapErr[T any, V any](elements []T, transform func(T) (V, error)) ([]V, error) {
 	result := make([]V, 0, len(elements))
 
@@ -56,38 +60,6 @@ func SliceMapErr[T any, V any](elements []T, transform func(T) (V, error)) ([]V,
 	}
 
 	return result, nil
-}
-
-// SliceFilterMap applies a transformation function to each element of a slice and returns a new slice
-// that contains the transformed elements.
-//
-// Parameters:
-//   - elements: The input slice to process ([]T)
-//   - transform: function that transforms each element of the slice (func(T) (V, error))
-//
-// Returns:
-//   - []V: a slice of transformed elements
-//   - error: an error if any occurred during processing
-//
-// Example:
-//
-//	// Filter out even numbers
-//	numbers := []int{1, 2, 3}
-//	numbersByEvenOdd := SliceFilterMap(numbers, func(n int) (bool, string) {
-//	    return n%2 == 0, fmt.Sprintf("Number %d is even", n)
-//	})
-//	// numbersByEvenOdd == []string{"Number 2 is even"}
-func SliceFilterMap[T any, V any](elements []T, transform func(T) (bool, V)) []V {
-	result := make([]V, 0, len(elements))
-
-	for _, item := range elements {
-		isValid, resultItem := transform(item)
-		if isValid {
-			result = append(result, resultItem)
-		}
-	}
-
-	return result
 }
 
 // SliceGroupBy groups the elements of a slice by a key selector function.
@@ -223,6 +195,38 @@ func SliceFilter[T any](elements []T, predicate func(T) bool) []T {
 	return result
 }
 
+// SliceFilterAndMap applies a transformation function to each element of a slice and returns a new slice
+// that contains the transformed elements.
+//
+// Parameters:
+//   - elements: The input slice to process ([]T)
+//   - transform: function that transforms each element of the slice (func(T) (V, error))
+//
+// Returns:
+//   - []V: a slice of transformed elements
+//   - error: an error if any occurred during processing
+//
+// Example:
+//
+//	// Filter out even numbers
+//	numbers := []int{1, 2, 3}
+//	numbersByEvenOdd := SliceFilterAndMap(numbers, func(n int) (bool, string) {
+//	    return n%2 == 0, fmt.Sprintf("Number %d is even", n)
+//	})
+//	// numbersByEvenOdd == []string{"Number 2 is even"}
+func SliceFilterAndMap[T any, V any](elements []T, transform func(T) (bool, V)) []V {
+	result := make([]V, 0, len(elements))
+
+	for _, item := range elements {
+		isValid, resultItem := transform(item)
+		if isValid {
+			result = append(result, resultItem)
+		}
+	}
+
+	return result
+}
+
 // SliceDistinct returns a new slice containing only the unique elements from the input slice.
 //
 // The function uses a key selector function to determine uniqueness. Elements are considered
@@ -299,6 +303,42 @@ func SliceShuffle[T any](elements []T) []T {
 	})
 
 	return copied
+}
+
+// SliceAddOrUpdate checks if an element matching the predicate exists in the slice.
+// If a match is found, the existing element is replaced with newItem (Update) in a new copy.
+// If no match is found, newItem is appended to the slice (Add).
+//
+// Parameters:
+//   - elements: The input slice to process ([]T).
+//   - newItem: The item to add or use for the update (T).
+//   - predicate: A function that takes an element of type T and returns a bool.
+//     The first element that evaluates to true is the one to be updated.
+//
+// Returns:
+//   - []T: A new slice containing the updated or added element.
+//
+// Example:
+//
+//	users := []User{{ID: 1, Name: "Alice"}, {ID: 2, Name: "Bob"}}
+//
+//	updatedUsers := SliceAddOrUpdate(users, User{ID: 1, Name: "Alyssa"}, func(u User) bool { return u.ID == 1 })
+//	// updatedUsers == []User{{ID: 1, Name: "Alyssa"}, {ID: 2, Name: "Bob"}}
+//
+//	addedUsers := SliceAddOrUpdate(updatedUsers, User{ID: 3, Name: "Charlie"}, func(u User) bool { return u.ID == 3 })
+//	// addedUsers == []User{{ID: 1, Name: "Alyssa"}, {ID: 2, Name: "Bob"}, {ID: 3, Name: "Charlie"}}
+func SliceAddOrUpdate[T any](elements []T, newItem T, predicate func(T) bool) []T {
+	for i, item := range elements {
+		if predicate(item) {
+			result := make([]T, len(elements))
+			copy(result, elements)
+			result[i] = newItem
+
+			return result
+		}
+	}
+
+	return append(elements, newItem)
 }
 
 // SliceToMap converts a slice of elements into a map using a key selector function.
